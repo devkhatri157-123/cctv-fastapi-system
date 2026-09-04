@@ -1,6 +1,6 @@
+opencv-python-headless
 fastapi
 uvicorn[standard]
-opencv-python-headless
 ultralytics
 numpy
 pillow
