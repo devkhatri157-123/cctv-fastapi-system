@@ -4,6 +4,5 @@ opencv-python-headless
 ultralytics
 numpy
 pillow
-kagglehub
 jinja2
 python-multipart
