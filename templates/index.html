@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Speed CCTV Monitoring Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: #00e676; }
+        .controls {
+            margin: 20px auto;
+            padding: 15px;
+            background: #1e1e1e;
+            width: 800px;
+            max-width: 90%;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        input[type="file"], button {
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+        }
+        button {
+            background-color: #00e676;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-webcam {
+            background-color: #29b6f6;
+        }
+        .stream-container {
+            margin-top: 10px;
+            display: inline-block;
+            border: 3px solid #00e676;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 230, 118, 0.3);
+        }
+        img {
+            width: 800px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>📹 High-Speed CCTV Detection Dashboard</h1>
+
+    <div class="controls">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept="video/*" required>
+            <button type="submit">📁 Upload & Stream Video</button>
+        </form>
+        <button class="btn-webcam" onclick="switchWebcam()">📷 Live Webcam</button>
+    </div>
+
+    <div class="stream-container">
+        <img id="videoFeed" src="/video_feed" alt="Real-Time Video Stream">
+    </div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            fetch('/upload_video', {
+                method: 'POST',
+                body: formData
+            }).then(() => {
+                refreshStream();
+            });
+        });
+
+        function switchWebcam() {
+            fetch('/set_webcam', { method: 'POST' }).then(() => {
+                refreshStream();
+            });
+        }
+
+        function refreshStream() {
+            var img = document.getElementById("videoFeed");
+            img.src = "/video_feed?" + new Date().getTime();
+        }
+    </script>
+</body>
+</html>
